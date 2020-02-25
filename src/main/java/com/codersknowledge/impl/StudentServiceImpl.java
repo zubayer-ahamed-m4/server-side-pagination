@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,4 +51,10 @@ public class StudentServiceImpl implements StudentService {
 		return st;
 	}
 
+	@Override
+	public Long getAllStudentsCount(String searchText) {
+		return studentRepository.count();
+	}
+
+	
 }

@@ -44,4 +44,10 @@ public class StudentServiceTest {
 		List<Student> list = studentService.getAllStudents(10,10, "studentId", SortOrderType.ASC, null);
 		list.stream().forEach(s -> System.out.println(s.toString()));
 	}
+
+	@Test
+	public void countTest() {
+		Long count = studentService.getAllStudentsCount(null);
+		System.out.println("============= " + count);
+	}
 }

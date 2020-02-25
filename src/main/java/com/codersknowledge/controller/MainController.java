@@ -31,8 +31,8 @@ public class MainController {
 		System.out.println(params);
 		ServersidePaginationResponse response = new ServersidePaginationResponse();
 		response.setDraw(params.getDraw());
-		response.setRecordsFiltered(params.getLength());
-		response.setRecordsTotal(params.getLength());
+		response.setRecordsFiltered(studentService.getAllStudentsCount(null).intValue());
+		response.setRecordsTotal(studentService.getAllStudentsCount(null).intValue());
 		
 		List<Student> students = studentService.getAllStudents(params.getLength(), params.getStart(), "studentId", SortOrderType.ASC, null);
 		List<String[]> data = new ArrayList<>();

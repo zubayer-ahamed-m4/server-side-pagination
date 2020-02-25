@@ -12,5 +12,5 @@ public interface StudentService {
 	
 	public int saveBulStudent(List<Student> students);
 	public List<Student> getAllStudents(int limit, int offset, String orderBy, SortOrderType orderType, String searchText);
-
+	public Long getAllStudentsCount(String searchText);
 }
