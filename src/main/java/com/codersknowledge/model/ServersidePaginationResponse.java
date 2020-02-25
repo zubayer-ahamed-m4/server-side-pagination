@@ -12,5 +12,5 @@ public class ServersidePaginationResponse {
 	private int draw;
 	private int recordsTotal;
 	private int recordsFiltered;
-	private List<Student> data;
+	private List<String[]> data;
 }

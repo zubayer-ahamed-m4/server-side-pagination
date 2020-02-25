@@ -1,5 +1,6 @@
 package com.codersknowledge.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,15 @@ public class MainController {
 		response.setDraw(0);
 		response.setRecordsFiltered(10);
 		response.setRecordsTotal(10);
-		response.setData(studentService.getAllStudents(10, 10, "studentId", SortOrderType.DESC, null));
+		
+		List<Student> students = studentService.getAllStudents(10, 10, "studentId", SortOrderType.ASC, null);
+		List<String[]> data = new ArrayList<>();
+		students.stream().forEach(s -> {
+			String id = String.valueOf(s.getStudentId());
+			String name = s.getName();
+			data.add(new String[] {id, name});
+		});
+		response.setData(data);
 		return response;
 	}
 }
