@@ -12,7 +12,7 @@ spring:
       max-idle: 20
       min-idle: 15
   jpa:    generate-ddl: true
-    hibernate:      ddl-auto: none
+    hibernate:      ddl-auto: update
       naming:        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate:

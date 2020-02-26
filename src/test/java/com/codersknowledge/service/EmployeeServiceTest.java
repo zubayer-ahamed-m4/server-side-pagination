@@ -1,7 +1,5 @@
 package com.codersknowledge.service;
 
-import static org.mockito.Mockito.inOrder;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.codersknowledge.entity.Student;
+import com.codersknowledge.entity.Employee;
 import com.codersknowledge.enums.SortOrderType;
 
 import lombok.extern.slf4j.Slf4j;
@@ -23,31 +21,31 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootTest
 @ComponentScan(basePackages = {"com.codersknowledge.*"})
 @Rollback(false)
-public class StudentServiceTest {
+public class EmployeeServiceTest {
 
-@Autowired private StudentService studentService;
+@Autowired private EmployeeService employeeService;
 	
 	@Test
 	public void testInsert() {
-		List<Student> students = new ArrayList<>();
+		List<Employee> students = new ArrayList<>();
 		for(int i = 1; i <= 1000; i++){
-			Student st = new Student();
-			st.setName("name - " + i);
+			Employee st = new Employee();
+			st.setFirstName("name - " + i);
 			students.add(st);
 		}
 		
-		studentService.saveBulStudent(students);
+		employeeService.saveEmployees(students);
 	}
 	
 	@Test
 	public void read() {
-		List<Student> list = studentService.getAllStudents(10,10, "studentId", SortOrderType.ASC, null);
+		List<Employee> list = employeeService.getAllStudents(10,10, "studentId", SortOrderType.ASC, null);
 		list.stream().forEach(s -> System.out.println(s.toString()));
 	}
 
 	@Test
 	public void countTest() {
-		Long count = studentService.getAllStudentsCount(null);
+		Long count = employeeService.getAllStudentsCount(null);
 		System.out.println("============= " + count);
 	}
 }

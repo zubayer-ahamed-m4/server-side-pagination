@@ -9,17 +9,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.codersknowledge.entity.Student;
+import com.codersknowledge.entity.Employee;
 import com.codersknowledge.enums.SortOrderType;
-import com.codersknowledge.model.PaginationParams;
-import com.codersknowledge.model.ServersidePaginationResponse;
-import com.codersknowledge.service.StudentService;
+import com.codersknowledge.model.RequestHelper;
+import com.codersknowledge.model.ResponseHelper;
+import com.codersknowledge.service.EmployeeService;
 
 @Controller
 @RequestMapping("/")
 public class MainController {
 	
-	@Autowired private StudentService studentService;
+	@Autowired private EmployeeService studentService;
 
 	@GetMapping
 	public String loadHomePage() {
@@ -27,18 +27,18 @@ public class MainController {
 	}
 	
 	@GetMapping("/students")
-	public @ResponseBody ServersidePaginationResponse loadTableData(PaginationParams params) {
+	public @ResponseBody ResponseHelper loadTableData(RequestHelper params) {
 		System.out.println(params);
-		ServersidePaginationResponse response = new ServersidePaginationResponse();
+		ResponseHelper response = new ResponseHelper();
 		response.setDraw(params.getDraw());
 		response.setRecordsFiltered(studentService.getAllStudentsCount(null).intValue());
 		response.setRecordsTotal(studentService.getAllStudentsCount(null).intValue());
 		
-		List<Student> students = studentService.getAllStudents(params.getLength(), params.getStart(), "studentId", SortOrderType.ASC, null);
+		List<Employee> students = studentService.getAllStudents(params.getLength(), params.getStart(), "studentId", SortOrderType.ASC, null);
 		List<String[]> data = new ArrayList<>();
 		students.stream().forEach(s -> {
-			String id = String.valueOf(s.getStudentId());
-			String name = s.getName();
+			String id = String.valueOf(s.getEmployeeId());
+			String name = s.getFirstName();
 			data.add(new String[] {id, name});
 		});
 		response.setData(data);

@@ -2,12 +2,10 @@ package com.codersknowledge.model;
 
 import java.util.List;
 
-import com.codersknowledge.entity.Student;
-
 import lombok.Data;
 
 @Data
-public class ServersidePaginationResponse {
+public class ResponseHelper {
 
 	private int draw;
 	private int recordsTotal;
