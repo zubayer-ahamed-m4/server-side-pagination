@@ -5,7 +5,7 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class ResponseHelper {
+public class DatatableResponseHelper {
 
 	private int draw;
 	private int recordsTotal;

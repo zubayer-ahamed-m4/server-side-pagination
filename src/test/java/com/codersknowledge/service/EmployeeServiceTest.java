@@ -1,6 +1,7 @@
 package com.codersknowledge.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -12,7 +13,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.codersknowledge.entity.Employee;
-import com.codersknowledge.enums.SortOrderType;
+import com.codersknowledge.enums.DatatableSortOrderType;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,19 +28,24 @@ public class EmployeeServiceTest {
 	
 	@Test
 	public void testInsert() {
-		List<Employee> students = new ArrayList<>();
+		List<Employee> employees = new ArrayList<>();
 		for(int i = 1; i <= 1000; i++){
 			Employee st = new Employee();
-			st.setFirstName("name - " + i);
-			students.add(st);
+			st.setFirstName("name " + i);
+			st.setLastName("Ahamed");
+			st.setOffice("Office " + i);
+			st.setPosition("Position " + i);
+			st.setSalary(Double.valueOf(10000 + i));
+			st.setStartDate(new Date());
+			employees.add(st);
 		}
 		
-		employeeService.saveEmployees(students);
+		employeeService.saveEmployees(employees);
 	}
 	
 	@Test
 	public void read() {
-		List<Employee> list = employeeService.getAllStudents(10,10, "studentId", SortOrderType.ASC, null);
+		List<Employee> list = employeeService.getAllStudents(10,10, "studentId", DatatableSortOrderType.ASC, null);
 		list.stream().forEach(s -> System.out.println(s.toString()));
 	}
 

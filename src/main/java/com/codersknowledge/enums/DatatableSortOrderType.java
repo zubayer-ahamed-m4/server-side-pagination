@@ -1,5 +1,5 @@
 package com.codersknowledge.enums;
 
-public enum SortOrderType {
+public enum DatatableSortOrderType {
 	ASC, DESC;
 }
