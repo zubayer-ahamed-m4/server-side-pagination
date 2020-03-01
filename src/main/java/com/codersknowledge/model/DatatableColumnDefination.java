@@ -3,6 +3,11 @@ package com.codersknowledge.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+/**
+ * 
+ * @author Zubayer Ahamed
+ *
+ */
 @Data
 @AllArgsConstructor
 public class DatatableColumnDefination {

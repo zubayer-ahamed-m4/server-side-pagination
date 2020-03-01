@@ -1,21 +1,15 @@
 package com.codersknowledge.service.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -24,49 +18,81 @@ import com.codersknowledge.enums.DatatableSortOrderType;
 import com.codersknowledge.repository.EmployeeRepository;
 import com.codersknowledge.service.EmployeeService;
 
+/**
+ * 
+ * @author Zubayer Ahamed
+ *
+ */
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
 	@PersistenceContext private EntityManager em;
-	@Autowired private EmployeeRepository studentRepository;
+	@Autowired private EmployeeRepository employeeRepository;
 	@Autowired private JdbcTemplate jdbcTemplate;
 
 	@Transactional
 	@Override
-	public int saveEmployees(List<Employee> students) {
-		for(Employee st : students) {
-			studentRepository.save(st);
+	public int saveEmployees(List<Employee> employees) {
+		int count = 0;
+		for(Employee em : employees) {
+			employeeRepository.save(em);
+			count++;
 		}
-		return 0;
+		return count;
 	}
 
 	@Override
-	public List<Employee> getAllStudents(int limit, int offset, String orderBy, DatatableSortOrderType orderType, String searchText) {
-		String sql = "SELECT * FROM employee ORDER BY "+ orderBy + " " + orderType +" LIMIT "+ limit +" OFFSET " + offset;
-		System.out.println(sql);
-		List<Map<String, Object>> result = jdbcTemplate.queryForList(sql);
+	public List<Employee> getAllEmployee(int limit, int offset, String orderBy, DatatableSortOrderType orderType, String searchText) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(selectClause())
+			.append(fromClause("employee"))
+			.append(whereClause(searchText))
+			.append(orderbyClause(orderBy, orderType.name()))
+			.append(limitAndOffsetClause(limit, offset));
+
+		List<Map<String, Object>> result = jdbcTemplate.queryForList(sql.toString());
 		List<Employee> list = new ArrayList<>();
-		result.stream().forEach(row -> list.add(constractStudentObjectFromMap(row)));
+		result.stream().forEach(row -> list.add(constractEmployeeObjectFromMap(row)));
 
 		return list;
 	}
-	
-	private Employee constractStudentObjectFromMap(Map<String, Object> row) {
-		Employee st = new Employee();
-		st.setEmployeeId((Long) row.get("employeeId"));
-		st.setFirstName((String) row.get("firstName"));
-		st.setLastName((String) row.get("lastName"));
-		st.setOffice((String) row.get("office"));
-		st.setPosition((String) row.get("position"));
-		st.setSalary((Double) row.get("salary"));
-		st.setStartDate((Date) row.get("startDate"));
-		return st;
-	}
 
 	@Override
-	public Long getAllStudentsCount(String searchText) {
-		return studentRepository.count();
+	public int countAllEmployee(String orderBy, DatatableSortOrderType orderType, String searchText) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT COUNT(*) ")
+			.append(fromClause("employee"))
+			.append(whereClause(searchText))
+			.append(orderbyClause(orderBy, orderType.name()));
+		return jdbcTemplate.queryForObject(sql.toString(), Integer.class);
 	}
 
-	
+	private Employee constractEmployeeObjectFromMap(Map<String, Object> row) {
+		Employee em = new Employee();
+		em.setEmployeeId((Long) row.get("employeeId"));
+		em.setFirstName((String) row.get("firstName"));
+		em.setLastName((String) row.get("lastName"));
+		em.setOffice((String) row.get("office"));
+		em.setPosition((String) row.get("position"));
+		em.setSalary((Double) row.get("salary"));
+		em.setStartDate((Date) row.get("startDate"));
+		return em;
+	}
+
+	private StringBuilder selectClause() {
+		return new StringBuilder("SELECT * ");
+	}
+	private StringBuilder fromClause(String tableName) {
+		return new StringBuilder(" FROM employee " + tableName + " ");
+	}
+	private StringBuilder whereClause(String searchText) {
+		if(searchText == null || searchText.isEmpty()) return new StringBuilder();
+		return new StringBuilder(" WHERE (employeeId LIKE '%"+ searchText +"%' OR firstName LIKE '%"+ searchText +"%' OR lastName LIKE '%"+ searchText +"%' OR office LIKE '%"+ searchText +"%' OR position LIKE '%"+ searchText +"%' OR salary LIKE '%"+ searchText +"%' OR startDate LIKE '%"+ searchText +"%') ");
+	}
+	private StringBuilder orderbyClause(String orderByField, String orderType) {
+		return new StringBuilder(" ORDER BY " + orderByField + " " + orderType + " ");
+	}
+	private StringBuilder limitAndOffsetClause(int limit, int offset) {
+		return new StringBuilder(" LIMIT " + limit + " OFFSET " + offset);
+	}
 }

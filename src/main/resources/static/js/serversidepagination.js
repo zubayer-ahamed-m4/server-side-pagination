@@ -13,5 +13,14 @@ $(document).ready(function() {
 			{ "name": "salary",  "targets": 6 }
 		],
 		"ajax" : "/students",
+		"columns": [
+			{ "data": "employeeId" },
+			{ "data": "firstName" },
+			{ "data": "lastName" },
+			{ "data": "office" },
+			{ "data": "position" },
+			{ "data": "startDate" },
+			{ "data": "salary" }
+		]
 	});
 })

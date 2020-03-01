@@ -13,6 +13,11 @@ import javax.persistence.TemporalType;
 
 import lombok.Data;
 
+/**
+ * 
+ * @author Zubayer Ahamed
+ *
+ */
 @Data
 @Entity
 @Table(name = "employee")

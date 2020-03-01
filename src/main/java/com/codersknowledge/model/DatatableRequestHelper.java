@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.codersknowledge.enums.DatatableSortOrderType;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
